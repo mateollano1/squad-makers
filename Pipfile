@@ -9,6 +9,7 @@ uvicorn = "*"
 gunicorn = "*"
 httptools = "*"
 tortoise-orm = "*"
+httpx = "*"
 asyncpg = "*"
 
 [dev-packages]

@@ -25,8 +25,10 @@ class PayloadUser(BaseModel):
     username: Optional[str]
 
 
-class UserInDB(BaseUser):
+class UserInDB(BaseModel):
     id: int
+    name: Optional[str]
+    username: str
     created_at: datetime
     last_modified: datetime
 

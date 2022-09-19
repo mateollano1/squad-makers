@@ -1,4 +1,6 @@
 from datetime import datetime
+from enum import Enum
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -8,19 +10,31 @@ class BaseJoke(BaseModel):
 
 
 class CreateJoke(BaseJoke):
-    pass
+    user_id: int
 
 
 class UpdateJoke(BaseModel):
     pass
 
 
-class PayloadJoke(UpdateJoke):
-    pass
+class PayloadJoke(BaseModel):
+    user_id: Optional[int]
+
+
+class TypeJoke(Enum):
+    Chuck = "Chuck"
+    Dad = "Dad"
+
+
+class JokeHttp(BaseModel):
+    id: Optional[str]
+    source: Optional[str]
+    joke: Optional[str]
 
 
 class JokeInDB(BaseJoke):
     id: int
+    user_id: Optional[int]
     created_at: datetime
     last_modified: datetime
 
