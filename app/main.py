@@ -2,11 +2,10 @@ import logging
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.db import generate_schema, init_db
-
 
 from app.api.api import api_router
 from app.config import settings
+from app.db import generate_schema, init_db
 from app.debugger import initialize_fastapi_server_debugger_if_needed
 
 log = logging.getLogger("uvicorn.info")

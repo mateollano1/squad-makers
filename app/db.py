@@ -1,12 +1,11 @@
 import logging
+import ssl
 
 from fastapi import FastAPI
 from tortoise import Tortoise, run_async
 from tortoise.contrib.fastapi import register_tortoise
 
 from app.config import settings
-import ssl
-
 
 log = logging.getLogger(__name__)
 
@@ -53,8 +52,6 @@ async def generate_schema() -> None:
         modules={"models": ["infra.postgres.models"]},
     )
     log.info("Generating database schema via Tortoise...")
-    # await Tortoise.generate_schemas()
-    # await Tortoise.close_connections()
 
 
 if __name__ == "__main__":

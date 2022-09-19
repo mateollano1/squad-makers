@@ -20,8 +20,9 @@ class UpdateUser(BaseModel):
     password: Optional[str]
 
 
-class PayloadUser(UpdateUser):
-    pass
+class PayloadUser(BaseModel):
+    name: Optional[str]
+    username: Optional[str]
 
 
 class UserInDB(BaseUser):
