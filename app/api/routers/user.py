@@ -20,7 +20,7 @@ router = APIRouter()
         500: {"description": "Server error"},
     },
 )
-async def create(*, user: CreateUser):
+async def create(*, user: CreateUser) -> UserInDB:
     user = await user_service.create(obj_in=user)
     return user
 
@@ -37,7 +37,7 @@ async def create(*, user: CreateUser):
         500: {"description": "Server error"},
     },
 )
-async def get_by_id(*, id: int):
+async def get_by_id(*, id: int) -> UserInDB:
     user = await user_service.get_by_id(id=id)
     if not user:
         return JSONResponse(status_code=404, content={"detail": "No user found"})
@@ -59,7 +59,7 @@ async def get_all(
     user_payload: PayloadUser = Depends(PayloadUser),
     skip: int = Query(0),
     limit: int = Query(99999)
-):
+) -> Optional[List[UserInDB]]:
     users = await user_service.get_all(
         payload=user_payload.dict(exclude_none=True),
         skip=skip,
@@ -79,7 +79,7 @@ async def get_all(
         404: {"description": "User not found"},
     },
 )
-async def update(*, id: int, user_update: UpdateUser):
+async def update(*, id: int, user_update: UpdateUser) -> UserInDB:
     user = await user_service.update(id=id, obj_in=user_update)
     if not user:
         return JSONResponse(status_code=404, content={"detail": "No user found"})
@@ -96,6 +96,6 @@ async def update(*, id: int, user_update: UpdateUser):
         404: {"description": "User not found"},
     },
 )
-async def remove(*, id: int):
+async def remove(*, id: int) -> None:
     await user_service.remove(id=id)
     return Response(status_code=204)

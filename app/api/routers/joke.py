@@ -27,7 +27,7 @@ router = APIRouter()
         500: {"description": "Server error"},
     },
 )
-async def create(*, joke: CreateJoke):
+async def create(*, joke: CreateJoke) -> JokeInDB:
     joke = await joke_service.create(obj_in=joke)
     return joke
 
@@ -44,7 +44,7 @@ async def create(*, joke: CreateJoke):
         500: {"description": "Server error"},
     },
 )
-async def generate_joke(*, type: TypeJoke):
+async def generate_joke(*, type: TypeJoke) -> JokeHttp:
     joke = await joke_service.generate_joke(type=type)
     return joke
 
@@ -61,7 +61,7 @@ async def generate_joke(*, type: TypeJoke):
         500: {"description": "Server error"},
     },
 )
-async def get_by_id(*, id: int):
+async def get_by_id(*, id: int) -> JokeInDB:
     joke = await joke_service.get_by_id(id=id)
     if not joke:
         return JSONResponse(status_code=404, content={"detail": "No Joke found"})
@@ -83,7 +83,7 @@ async def get_all(
     joke_payload: PayloadJoke = Depends(PayloadJoke),
     skip: int = Query(0),
     limit: int = Query(99999)
-):
+) -> Optional[List[JokeInDB]]:
     jokes = await joke_service.get_all(
         payload=joke_payload.dict(exclude_none=True),
         skip=skip,
@@ -103,7 +103,7 @@ async def get_all(
         404: {"description": "joke not found"},
     },
 )
-async def update(*, id: int, joke_update: UpdateJoke):
+async def update(*, id: int, joke_update: UpdateJoke) -> JokeInDB:
     joke = await joke_service.update(id=id, obj_in=joke_update)
     if not joke:
         return JSONResponse(status_code=404, content={"detail": "No joke found"})
@@ -120,6 +120,6 @@ async def update(*, id: int, joke_update: UpdateJoke):
         404: {"description": "Joke not found"},
     },
 )
-async def remove(*, id: int):
+async def remove(*, id: int) -> None:
     await joke_service.remove(id=id)
     return Response(status_code=204)

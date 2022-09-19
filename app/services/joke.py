@@ -1,12 +1,12 @@
+from app.crud.joke import joke
 from app.schemas.joke import CreateJoke, JokeHttp, UpdateJoke
-from app.services.base_impl import BaseService
+from app.services.base_impl import BaseService, QueryType
 from app.services.http.client import client
 
 
 class JokeService(BaseService[CreateJoke, UpdateJoke]):
-    def __init__(
-        self,
-    ):
+    def __init__(self, queries: QueryType):
+        super().__init__(queries=queries)
         self.__client = client
         self.__factory_joke = {
             "Dad": self.__generate_dad,
@@ -33,4 +33,4 @@ class JokeService(BaseService[CreateJoke, UpdateJoke]):
         return JokeHttp(**response, source=url)
 
 
-joke_service = JokeService()
+joke_service = JokeService(queries=joke)

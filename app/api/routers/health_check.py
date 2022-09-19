@@ -26,7 +26,6 @@ class HealthCheck(BaseModel):
     "/status",
     response_model=HealthCheck,
     status_code=status.HTTP_200_OK,
-    tags=["Health Check"],
     summary="Performs health check",
     description="Performs health check and returns information about running service.",
 )
