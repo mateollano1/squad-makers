@@ -23,6 +23,15 @@ router = APIRouter()
     },
 )
 async def get_mcm(*, numbers: List[int] = Query(...)) -> int:
+    """
+    Get The mcm either the input numbers .
+
+    **Args**:
+    - **numbers** (List[int], required): the list of numbers to be operated.
+
+    **Returns**:
+    - **int**: Mcm either the input numbers
+    """
     if len(numbers) == 1:
         return numbers[0]
     mcm = math_service.get_mcm_by_list(numbers=numbers)
@@ -42,5 +51,14 @@ async def get_mcm(*, numbers: List[int] = Query(...)) -> int:
     },
 )
 async def add_number(*, number: int = Query(...)) -> int:
+    """
+    Get The original number plus 1 .
+
+    **Args**:
+    - **number** (int, required): the numbers to be operated.
+
+    **Returns**:
+    - **int**: The original number plus 1.
+    """
     plus_number = math_service.add(number=number)
     return plus_number
