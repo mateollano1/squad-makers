@@ -14,6 +14,7 @@ docker-compose -f docker/Docker-compose.dev.yml up --build
 ```
 
 Arquitectura propuesta:
+ <br />
 ![image](https://user-images.githubusercontent.com/28764065/191331841-1f2ed1b7-dc03-403e-ad68-5c2530e015d2.png)
 
 
