@@ -5,7 +5,7 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    command: python -m pytest --asyncio-mode=strict
+    command: python -m pytest --cov="." --asyncio-mode=strict
     volumes:
       - ../:/usr/src/app/
     environment:
