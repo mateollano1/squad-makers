@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: squadmakers-intern-service-service
+  namespace: squadmaker
+spec:
+  selector:
+    role: squadmakers-intern-service-service
+  ports:
+  - port: 80
+    targetPort: 80
+  type: LoadBalancer

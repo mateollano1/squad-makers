@@ -1,8 +1,7 @@
 import logging
-import ssl
 
 from fastapi import FastAPI
-from tortoise import Tortoise, run_async
+from tortoise import Tortoise
 from tortoise.contrib.fastapi import register_tortoise
 
 from app.config import settings
@@ -10,49 +9,42 @@ from app.config import settings
 log = logging.getLogger(__name__)
 
 
-def db_config(models):
-
-    ctx = ssl.create_default_context()
-    ctx.check_hostname = False
-    ctx.verify_mode = ssl.CERT_NONE
-    config = {
-        "connections": {
-            "default": {
-                "engine": "tortoise.backends.asyncpg",
-                "credentials": {
-                    "database": settings.POSTGRES_DATABASE_NAME,
-                    "host": settings.POSTGRES_HOST,
-                    "password": settings.POSTGRES_PASSWORD,
-                    "port": settings.POSTGRES_PORT,
-                    "user": settings.POSTGRES_USER,
-                    "minsize": settings.POSTGRES_MINSIZE,
-                    "maxsize": settings.POSTGRES_MAXSIZE,
-                    "ssl": ctx,  # Here we pass in the SSL context
-                },
-            }
+TORTOISE_ORM = {
+    "connections": {
+        "default": {
+            "engine": "tortoise.backends.asyncpg",
+            "credentials": {
+                "database": settings.POSTGRES_DATABASE_NAME,
+                "host": settings.POSTGRES_HOST,
+                "password": settings.POSTGRES_PASSWORD,
+                "port": settings.POSTGRES_PORT,
+                "user": settings.POSTGRES_USER,
+                "minsize": settings.POSTGRES_MINSIZE,
+                "maxsize": settings.POSTGRES_MAXSIZE,
+            },
+        }
+    },
+    "apps": {
+        "models": {
+            "models": ["app.models"],
+            "default_connection": "default",
         },
-        "apps": {"models": {"models": [models], "default_connection": "default"}},
-    }
-    return config
+    },
+}
 
 
 def init_db(app: FastAPI) -> None:
+    """si es una base de datos en memoria se deben generar los esquemas inmediatamente"""
     register_tortoise(
         app,
-        config=db_config("app.models"),
-        generate_schemas=True,
+        config=TORTOISE_ORM,
+        generate_schemas=settings.DATABASE_URL == "sqlite://:memory:",
         add_exception_handlers=True,
     )
 
 
 async def generate_schema() -> None:
     log.info("Initializing Tortoise...")
-    await Tortoise.init(
-        config=db_config("app.models"),
-        modules={"models": ["infra.postgres.models"]},
-    )
+    await Tortoise.init(config=TORTOISE_ORM)
     log.info("Generating database schema via Tortoise...")
-
-
-if __name__ == "__main__":
-    run_async(generate_schema())
+    await Tortoise.generate_schemas()

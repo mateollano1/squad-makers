@@ -1,5 +1,5 @@
 from app.crud.joke import joke
-from app.schemas.joke import CreateJoke, JokeHttp, UpdateJoke
+from app.schemas.joke import CreateJoke, JokeHttp, TypeJoke, UpdateJoke
 from app.services.base_impl import BaseService, QueryType
 from app.services.http.client import client
 
@@ -13,7 +13,7 @@ class JokeService(BaseService[CreateJoke, UpdateJoke]):
             "Chuck": self.__generate_chuck,
         }
 
-    async def generate_joke(self, *, type: str):
+    async def generate_joke(self, *, type: TypeJoke):
         kind = self.__factory_joke[type.name]
         return await kind()
 

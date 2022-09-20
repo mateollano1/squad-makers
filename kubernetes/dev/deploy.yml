@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: squadmakers-intern-service-deploy
+  namespace: squadmaker
+  labels:
+    role: squadmakers-intern-service-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: squadmakers-intern-service-service
+      tier: web-service
+  template:
+    metadata:
+      labels:
+        role: squadmakers-intern-service-service
+        tier: web-service
+    spec:
+      containers:
+        - name: squadmakers-intern-service
+          image: acrpronosticos.azurecr.io/squadmakers-intern-service:0.0.1
+          imagePullPolicy: Always
+          args:
+            [
+              "gunicorn",
+              "app.main:app",
+              "-w",
+              "1",
+              "-k",
+              "uvicorn.workers.UvicornWorker",
+              "-b",
+              "0.0.0.0:80",
+              "--access-logfile",
+              "-",
+              "--log-level",
+              "info",
+              "--timeout",
+              "3600",
+            ]
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: squadmakers-intern-service-config
+          resources:
+            requests:
+              memory: "350Mi"
+              cpu: "80m"
+            limits:
+              memory: "500Mi"
+              cpu: "120m"

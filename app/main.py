@@ -2,6 +2,8 @@ import logging
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.inmemory import InMemoryBackend
 
 from app.api.api import api_router
 from app.config import settings
@@ -39,3 +41,4 @@ async def startup_event():
     log.info("Starting up...")
     init_db(app)
     await generate_schema()
+    FastAPICache.init(InMemoryBackend(), prefix="fastapi-cache", expire=1000)

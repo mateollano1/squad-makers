@@ -11,17 +11,21 @@ httptools = "*"
 tortoise-orm = "*"
 httpx = "*"
 asyncpg = "*"
+fastapi-cache2 = "*"
+aioredis = "*"
 
 [dev-packages]
 debugpy = "*"
 pre-commit = "*"
 pytest = "*"
 pytest-cov = "*"
-pytest-mock = "*"
 pytest-asyncio = "*"
+pytest-mock = "*"
 black = "*"
 requests = "*"
 requests-mock = "*"
+SQLAlchemy = "*"
+psycopg2-binary = "*"
 
 [requires]
 python_version = "3.8"

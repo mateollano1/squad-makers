@@ -2,12 +2,14 @@ from typing import List
 
 from fastapi import APIRouter, Query
 from fastapi.responses import JSONResponse
+from fastapi_cache.decorator import cache
 
 from app.services.math import math_service
 
 router = APIRouter()
 
 
+@cache(namespace="math")
 @router.get(
     "/mcm",
     response_class=JSONResponse,
@@ -27,6 +29,7 @@ async def get_mcm(*, numbers: List[int] = Query(...)) -> int:
     return mcm
 
 
+@cache(namespace="math")
 @router.get(
     "/plus",
     response_class=JSONResponse,

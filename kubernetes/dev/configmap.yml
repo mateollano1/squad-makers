@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: squadmakers-intern-service-config
+  namespace: squadmaker
+data:
+  DEBUGGER: "False"
+  DEBUGGER: "True"
+  WEB_APP_VERSION: "0.0.0"
+  WEP_APP_TITLE: "squadmakers"
+  WEP_APP_DESCRIPTION: " Service for the manage of the jokes services"
+  DATABASE_URL: "postgres://postgres:J#h69FLxXxPfyBZ@db.awqhhtkwezimydksqtec.supabase.co:5432/postgres"
+  POSTGRES_DATABASE_NAME: "postgres"
+  POSTGRES_HOST: "db.awqhhtkwezimydksqtec.supabase.co"
+  POSTGRES_PASSWORD: "J#h69FLxXxPfyBZ"
+  POSTGRES_PORT: "5432"
+  POSTGRES_USER: "postgres"
+  POSTGRES_MINSIZE: "1"
+  POSTGRES_MAXSIZE: "20"

@@ -1,0 +1,33 @@
+version: "3.2"
+
+services:
+  squadmakers-intern-service-test:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: python -m pytest --asyncio-mode=strict
+    volumes:
+      - ../:/usr/src/app/
+    environment:
+      - DEBUGGER=False
+      - WEB_APP_VERSION=0.0.0
+      - WEP_APP_TITLE=squadmakers
+      - WEP_APP_DESCRIPTION= Service for the manage of the jokes services
+      - DATABASE_URL=postgres://postgres:postgres@db-test:5432/squad
+      - POSTGRES_DATABASE_NAME=postgres
+      - POSTGRES_HOST=db-test
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_MINSIZE=1
+      - POSTGRES_MAXSIZE=20
+    depends_on:
+      - db-test
+
+  db-test:
+    build:
+      context: ../db
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
